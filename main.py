@@ -8,7 +8,7 @@ from sklearn.metrics import mean_absolute_percentage_error
 import keras
 from keras import layers
 
-df = pd.read_csv('Gold.csv', parse_dates=[0])
+df = pd.read_csv('Gold2000-2020.csv', parse_dates=[0])
 
 df.drop(['Vol.', 'Change %'], axis=1, inplace=True)
 df.sort_values(by=['Date'], inplace=True)
@@ -31,7 +31,7 @@ fig.update_layout(xaxis_title='Date',
 
 # fig.show()
 
-test_size = int(df.shape[0] * 0.1)
+test_size = int(df.shape[0] * 0.05)
 
 plt.figure(figsize=(15, 6), dpi=150)
 plt.rcParams['axes.facecolor'] = 'lightgray'
@@ -104,7 +104,7 @@ def define_model():
 
 
 model = define_model()
-history = model.fit(X_train, Y_train, epochs=50, batch_size=16, validation_split=0.1)
+history = model.fit(X_train, Y_train, epochs=70, batch_size=16, validation_split=0.1)
 
 # -----------------------------
 
