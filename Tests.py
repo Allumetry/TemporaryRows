@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-data = pd.read_csv('Gold_svej.csv', parse_dates=['Date'], index_col='Date')
+data = pd.read_csv('Gold2010-2025.csv', parse_dates=['Date'], index_col='Date')
 data['Price'] = data['Price'].str.replace(',', '').astype(float)
 data.sort_values(by=['Date'], inplace=True)
 
@@ -60,4 +60,4 @@ plt.plot(series.index[train_size+look_back:len(series)-1], test_predict, label='
 plt.legend()
 plt.show()
 
-model.save("Gold_sample.keras")
+# model.save("Gold_test.keras")

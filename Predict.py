@@ -4,10 +4,10 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-model = models.load_model('Gold_sample.keras')
+model = models.load_model('Gold.keras')
 scaler = joblib.load('Gold.scaler')
 
-df = pd.read_csv('Gold.csv', parse_dates=[0])
+df = pd.read_csv('Gold2013-2023.csv', parse_dates=[0])
 
 df.drop(['Vol.', 'Change %'], axis=1, inplace=True)
 df.sort_values(by=['Date'], inplace=True)

@@ -7,8 +7,9 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import mean_absolute_percentage_error
 import keras
 from keras import layers
+from keras import callbacks
 
-df = pd.read_csv('Gold2000-2020.csv', parse_dates=[0])
+df = pd.read_csv('Gold2013-2023.csv', parse_dates=[0])
 
 df.drop(['Vol.', 'Change %'], axis=1, inplace=True)
 df.sort_values(by=['Date'], inplace=True)
@@ -31,7 +32,7 @@ fig.update_layout(xaxis_title='Date',
 
 # fig.show()
 
-test_size = int(df.shape[0] * 0.05)
+test_size = int(df.shape[0] * 0.1)
 
 plt.figure(figsize=(15, 6), dpi=150)
 plt.rcParams['axes.facecolor'] = 'lightgray'
@@ -104,7 +105,15 @@ def define_model():
 
 
 model = define_model()
-history = model.fit(X_train, Y_train, epochs=70, batch_size=16, validation_split=0.1)
+
+callback = callbacks.EarlyStopping(
+    monitor='val_loss',
+    patience=10,
+    restore_best_weights=True,
+    min_delta=1e-4
+)
+
+history = model.fit(X_train, Y_train, epochs=20, batch_size=32, validation_split=0.1)
 
 # -----------------------------
 
@@ -136,7 +145,7 @@ f2.legend()
 fig.show()
 # -----------------------------
 
-loss = model.evaluate(X_test, Y_test)
+loss = model.evaluate(X_test, Y_test)[0]
 Y_pred = model.predict(X_test)
 MAPE = mean_absolute_percentage_error(Y_test, Y_pred)
 accuracy = 1 - MAPE
@@ -170,5 +179,5 @@ plt.legend(['Test set', 'Prediction'], loc='upper left', prop={'size': 15})
 plt.grid(color='white')
 plt.show()
 
-model.save('Gold.keras')
-joblib.dump(scaler, 'Gold.scaler')
+# model.save('Gold.keras')
+# joblib.dump(scaler, 'Gold.scaler')
